@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#007aff">
+<title>NotebookLM 워크숍 — 소병훈 의원실</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Segoe UI", "Malgun Gothic", sans-serif;
+    background: #f2f2f7;
+    color: #1c1c1e;
+    line-height: 1.55;
+    padding: 16px;
+    max-width: 720px;
+    margin: 0 auto;
+    padding-bottom: 64px;
+  }
+  header {
+    text-align: center;
+    padding: 28px 16px 24px;
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+  }
+  .subtitle {
+    font-size: 14px;
+    color: #8e8e93;
+  }
+  .card {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 14px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }
+  .card-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    color: #007aff;
+    background: #e6f0ff;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+    letter-spacing: 0.3px;
+  }
+  .card-label.green { color: #248a3d; background: #e3f7e8; }
+  .card-label.purple { color: #5e5ce6; background: #ebebff; }
+  .card-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: -0.2px;
+  }
+  .card-desc {
+    font-size: 13px;
+    color: #6e6e73;
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+  .link-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #007aff;
+    color: white;
+    padding: 18px 20px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    transition: transform 0.1s;
+  }
+  .link-btn:active { transform: scale(0.98); }
+  .link-btn.chatgpt { background: #10a37f; }
+  .link-btn.gemini { background: #4285f4; }
+  .link-btn.claude { background: #d97757; }
+  .link-btn.notebooklm { background: #5e5ce6; }
+  .link-btn .arrow { font-size: 18px; opacity: 0.8; }
+  .prompt-box {
+    background: #f2f2f7;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 12px;
+    font-family: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-height: 240px;
+    overflow-y: auto;
+    margin-bottom: 12px;
+    color: #3a3a3c;
+    border: 1px solid #e5e5ea;
+  }
+  .copy-btn {
+    width: 100%;
+    background: #34c759;
+    color: white;
+    border: none;
+    padding: 18px;
+    border-radius: 12px;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    -webkit-appearance: none;
+    appearance: none;
+    font-family: inherit;
+  }
+  .copy-btn:active { transform: scale(0.98); }
+  .copy-btn.copied { background: #248a3d; }
+  .section-divider {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #8e8e93;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 24px 0 14px;
+  }
+  .help {
+    background: #fff8e6;
+    border: 1px solid #ffe9a3;
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 13px;
+    color: #6b5400;
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+  .help b { color: #4a3a00; }
+  footer {
+    text-align: center;
+    font-size: 12px;
+    color: #8e8e93;
+    padding: 24px 0 8px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>AI로 의정보고서 만들기</h1>
+  <div class="subtitle">NotebookLM 워크숍 · 소병훈 의원실</div>
+</header>
+
+<div class="help">
+  <b>사용법.</b> 아래 <b>복사</b> 버튼을 누르면 프롬프트가 자동 복사됩니다.<br>
+  Claude 또는 NotebookLM을 열고 입력창에 붙여넣기 하세요.
+</div>
+
+<div class="section-divider">필수 링크</div>
+
+<div class="card">
+  <a href="https://chatgpt.com" target="_blank" rel="noopener" class="link-btn chatgpt">
+    ChatGPT 열기 <span class="arrow">→</span>
+  </a>
+  <a href="https://gemini.google.com" target="_blank" rel="noopener" class="link-btn gemini">
+    Gemini 열기 <span class="arrow">→</span>
+  </a>
+  <a href="https://claude.ai" target="_blank" rel="noopener" class="link-btn claude">
+    Claude 열기 <span class="arrow">→</span>
+  </a>
+  <a href="https://notebooklm.google.com" target="_blank" rel="noopener" class="link-btn notebooklm">
+    NotebookLM 열기 <span class="arrow">→</span>
+  </a>
+</div>
+
+<div class="section-divider">1단계 · Claude로 단일 소스 만들기</div>
+
+<div class="card">
+  <span class="card-label">PROMPT 1 · AMH 법안</span>
+  <div class="card-title">AMH 데이터 개방 법안</div>
+  <div class="card-desc">Claude에 붙여넣기 → A4 1장짜리 단일 소스 받기 → NotebookLM에 텍스트로 붙여넣기</div>
+  <pre class="prompt-box" id="p1">당신은 보건복지 정책을 분석하는 정책 리서처입니다.
+AMH 검사 데이터 개방 법안 제안서를 위한 단일 소스 문서를 만들어줘.
+이 문서는 NotebookLM에 업로드해서 5장짜리 슬라이드덱을 만들기 위한 용도야.
+짧고 간결하게, A4 1장 분량으로 작성해줘.
+
+[배경]
+- 보건복지부는 가임력 검사 지원 사업으로 AMH 검사비를 지원 중
+- 그런데 질병관리청 난임 코호트는 AMH 데이터를 수집하지 않음
+- 즉, 검사는 국가가 지원하지만 데이터는 흩어져 사라지는 구조
+
+[문서 구성 — 딱 4개 항목만, 각 3~5줄]
+1. AMH란? — 한 줄 정의 + 왜 중요한지 한 줄
+2. 문제 — 정책 역설 한 문단 (검사 지원 vs 데이터 미수집)
+3. 해외 사례 — 1~2개국 짧게 (영국 UK Biobank 등 데이터 개방 사례)
+4. 법안 제안 — 핵심 3줄 (수집 의무화 / 비식별 개방 / 연구 활용)
+
+[규칙]
+- 전체 A4 1장 이내 (1,000자 내외)
+- 표·그래프·이모지 없이 텍스트만
+- 출처는 본문 끝에 3~5개만 간단히
+- 슬라이드 5장 (표지 / 문제 / 해외사례 / 제안 / 기대효과) 만들기 좋게 정리</pre>
+  <button class="copy-btn" data-target="p1">복사</button>
+</div>
+
+<div class="card">
+  <span class="card-label">PROMPT 2 · 의정활동</span>
+  <div class="card-title">소병훈 의원님 2025년 의정활동</div>
+  <div class="card-desc">웹 검색이 가능한 Claude/Gemini에 붙여넣기 → 단일 소스 받기 → NotebookLM에 텍스트로 붙여넣기</div>
+  <pre class="prompt-box" id="p2">당신은 의정활동을 정리하는 정책 리서처입니다.
+웹 검색을 활용해 소병훈 의원님(더불어민주당, 경기 광주시갑)의 2025년 의정활동 단일 소스 문서를 만들어줘.
+이 문서는 NotebookLM에 업로드해서 5장짜리 슬라이드덱을 만들기 위한 용도야.
+짧고 간결하게, A4 1장 분량으로 작성해줘.
+
+[검색 키워드 힌트]
+- "소병훈 의원님 2025"
+- "소병훈 대표발의 법안 2025"
+- "소병훈 광주시갑 예산"
+- 의원실 보도자료, 의안정보시스템
+
+[문서 구성 — 딱 4개 항목만, 각 3~5줄]
+1. 입법 성과 — 2025년 대표발의 법안 핵심 2~3개
+2. 예산 확보 — 광주시갑 지역 예산 핵심 성과
+3. 국정감사·정책활동 — 핵심 이슈 2~3개
+4. 지역 현안 — 광주시 주민 체감 성과 2~3개
+
+[규칙]
+- 전체 A4 1장 이내 (1,000자 내외)
+- 표·그래프·이모지 없이 텍스트만
+- 출처 URL 3~5개 본문 끝에
+- 슬라이드 5장 (인사말 / 입법성과 / 예산실적 / 지역현안 / 향후계획) 만들기 좋게 정리
+- 검색이 안 되는 내용은 "확인 필요" 표시</pre>
+  <button class="copy-btn" data-target="p2">복사</button>
+</div>
+
+<div class="section-divider">2단계 · NotebookLM에 슬라이드 생성</div>
+
+<div class="card">
+  <span class="card-label green">PROMPT 3 · NotebookLM 슬라이드</span>
+  <div class="card-title">AMH 슬라이드 5장 생성</div>
+  <div class="card-desc">NotebookLM 스튜디오 → 슬라이드 → 연필 아이콘 클릭 → 붙여넣기 → 생성</div>
+  <pre class="prompt-box" id="p3">당신은 데이터 정책 전문 에디터입니다.
+업로드된 단일 소스를 기반으로 AMH 검사 데이터 개방 법안 제안 슬라이드 5장을 만들어주세요.
+
+구성:
+1. 표지 — 법안 제목 + 한 줄 요약
+2. 문제 — 정책 역설 (검사 지원 vs 데이터 미수집)
+3. 해외 사례 — 영국 UK Biobank 등
+4. 법안 제안 — 수집 의무화 / 비식별 개방 / 연구 활용
+5. 기대 효과 — 난임 연구 가속화 + 정책 근거 확보
+
+규칙:
+- 슬라이드마다 핵심 문장 1줄 + 근거 3줄 이내
+- 모든 슬라이드에 출처 번호 [1][2] 자동 포함
+- 의원·보좌진이 발표용으로 바로 쓸 수 있는 톤</pre>
+  <button class="copy-btn" data-target="p3">복사</button>
+</div>
+
+<div class="card">
+  <span class="card-label green">PROMPT 4 · NotebookLM 슬라이드</span>
+  <div class="card-title">소병훈 2025 의정활동 슬라이드 5장</div>
+  <div class="card-desc">NotebookLM 스튜디오 → 슬라이드 → 연필 아이콘 클릭 → 붙여넣기 → 생성</div>
+  <pre class="prompt-box" id="p4">당신은 의정활동 전문 에디터입니다.
+업로드된 단일 소스를 기반으로 소병훈 의원님 2025년 의정활동 보고 슬라이드 5장을 만들어주세요.
+
+구성:
+1. 인사말 — 의원 소개 + 한 해 인사
+2. 입법 성과 — 대표발의 법안 핵심
+3. 예산 실적 — 광주시갑 지역 예산
+4. 지역 현안 — 주민 체감 성과
+5. 향후 계획 — 다음 해 약속
+
+규칙:
+- 지역구 주민이 보기 쉬운 톤
+- 핵심 수치 중심
+- 모든 슬라이드에 출처 번호 [1][2] 포함
+- 의원실 홈페이지/보도자료에 바로 게시 가능한 수준</pre>
+  <button class="copy-btn" data-target="p4">복사</button>
+</div>
+
+<div class="section-divider">도움말</div>
+
+<div class="card">
+  <div class="card-title" style="font-size: 15px; margin-bottom: 10px;">막혔을 때</div>
+  <div style="font-size: 13px; color: #3a3a3c; line-height: 1.7;">
+    · <b>로그인이 안 돼요</b> → Gmail로 로그인 (개인 계정 OK)<br>
+    · <b>NotebookLM에 파일 업로드가 안 돼요</b> → 텍스트를 통째로 복사해서 "복사된 텍스트" 옵션으로 붙여넣기<br>
+    · <b>슬라이드가 평범해요</b> → 연필 아이콘 ★ 누르고 프롬프트를 다시 입력했는지 확인<br>
+    · <b>그 외</b> → 손 들기, 바로 도와드립니다
+  </div>
+</div>
+
+<footer>
+  소병훈 의원실 NotebookLM 워크숍 · 2026
+</footer>
+
+<script>
+  document.querySelectorAll('.copy-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var targetId = btn.getAttribute('data-target');
+      var text = document.getElementById(targetId).innerText;
+      var done = function() {
+        var original = btn.innerText;
+        btn.innerText = '복사 완료!';
+        btn.classList.add('copied');
+        setTimeout(function() {
+          btn.innerText = original;
+          btn.classList.remove('copied');
+        }, 1500);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(function() { fallback(text, done); });
+      } else {
+        fallback(text, done);
+      }
+    });
+  });
+  function fallback(text, done) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.top = '-9999px';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try { document.execCommand('copy'); done(); } catch(e) { alert('복사 실패. 수동으로 복사해주세요.'); }
+    document.body.removeChild(ta);
+  }
+</script>
+
+</body>
+</html>
